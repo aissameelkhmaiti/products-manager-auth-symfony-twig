@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+<script src="https://cdn.tailwindcss.com"></script>
+
+<div class="min-h-screen flex items-center justify-center bg-emerald-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-3xl shadow-2xl border border-emerald-100">
+        
+        {# En-tête avec dégradé vert #}
+        <div class="text-center">
+            <div class="mx-auto h-16 w-16 bg-gradient-to-br from-emerald-400 to-green-600 rounded-2xl flex items-center justify-center shadow-lg transform -rotate-6">
+                <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+            </div>
+            <h2 class="mt-6 text-3xl font-extrabold text-emerald-900">Content de vous revoir</h2>
+            <p class="mt-2 text-sm text-emerald-600/80">Accédez à votre espace sécurisé</p>
+        </div>
+
+        {# Gestion des erreurs (Style Vert/Rouge) #}
+        {% if error %}
+            <div class="bg-red-50 border-r-4 border-red-500 p-4 mb-4 rounded-xl shadow-sm animate-pulse">
+                <div class="flex">
+                    <div class="ml-3">
+                        <p class="text-sm text-red-800 font-medium">{{ error.messageKey|trans(error.messageData, 'security') }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {# Si l'utilisateur est déjà connecté #}
+        {% if app.user %}
+            <div class="bg-emerald-50 p-6 rounded-2xl text-center border border-emerald-100">
+                <p class="text-sm text-emerald-800">
+                    Session active : <span class="font-bold text-emerald-600">{{ app.user.userIdentifier }}</span>
+                </p>
+                <a href="{{ path('app_logout') }}" class="mt-4 inline-block px-6 py-2 bg-emerald-600 text-white rounded-full text-sm font-semibold hover:bg-emerald-700 transition-all shadow-md">
+                    Se déconnecter
+                </a>
+            </div>
+        {% else %}
+
+            <form class="mt-8 space-y-5" method="post">
+                <div class="space-y-4">
+                    {# Email #}
+                    <div>
+                        <label for="inputEmail" class="block text-sm font-semibold text-emerald-900 mb-1 ml-1">Email professionnel</label>
+                        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" 
+                            class="block w-full px-4 py-3 rounded-xl border-emerald-100 bg-emerald-50/30 text-emerald-900 placeholder-emerald-300 focus:ring-2 focus:ring-emerald-500 focus:border-transparent focus:bg-white transition-all outline-none" 
+                            placeholder="nom@exemple.com" autocomplete="email" required autofocus>
+                    </div>
+                    
+                    {# Password #}
+                    <div>
+                        <label for="inputPassword" class="block text-sm font-semibold text-emerald-900 mb-1 ml-1">Mot de passe</label>
+                        <input type="password" name="password" id="inputPassword" 
+                            class="block w-full px-4 py-3 rounded-xl border-emerald-100 bg-emerald-50/30 text-emerald-900 placeholder-emerald-300 focus:ring-2 focus:ring-emerald-500 focus:border-transparent focus:bg-white transition-all outline-none" 
+                            placeholder="••••••••" autocomplete="current-password" required>
+                    </div>
+                </div>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                {# Submit Button #}
+                <div class="pt-2">
+                    <button type="submit" class="w-full flex justify-center py-3.5 px-4 border border-transparent text-sm font-bold rounded-xl text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-all shadow-lg hover:shadow-emerald-200 active:scale-[0.98]">
+                        Connexion sécurisée
+                    </button>
+                </div>
+            </form>
+
+            {# Lien vers Register #}
+            <div class="mt-8 text-center">
+                <p class="text-sm text-emerald-800">
+                    Nouveau ici ? 
+                    <a href="{{ path('app_register') }}" class="font-bold text-emerald-600 hover:text-emerald-500 hover:underline transition-all">
+                        Créer un compte gratuitement
+                    </a>
+                </p>
+            </div>
+
+        {% endif %}
+
+        {# Footer #}
+        <div class="mt-10 pt-6 border-t border-emerald-50 text-center">
+            <p class="text-xs text-emerald-400 font-medium tracking-wide">
+                &copy; {{ "now"|date("Y") }} VOTRE MARQUE • SÉCURITÉ GARANTIE
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

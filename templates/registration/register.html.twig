@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un compte{% endblock %}
+
+{% block body %}
+<script src="https://cdn.tailwindcss.com"></script>
+
+<div class="min-h-screen bg-emerald-50/50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full mx-auto bg-white p-10 rounded-3xl shadow-xl border border-emerald-100">
+        
+        {# Header #}
+        <div class="text-center mb-10">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-emerald-100 rounded-full mb-4">
+                <svg class="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                </svg>
+            </div>
+            <h1 class="text-3xl font-extrabold text-emerald-900 tracking-tight">Inscription</h1>
+            <p class="mt-2 text-sm text-emerald-600/70 font-medium">Rejoignez notre communauté en quelques instants.</p>
+        </div>
+
+        {# Flash Messages #}
+        {% for message in app.flashes('error') %}
+            <div class="mb-6 p-4 text-sm text-red-700 bg-red-50 rounded-xl border-l-4 border-red-500 flex items-center shadow-sm">
+                <svg class="w-5 h-5 mr-3 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                </svg>
+                <span class="font-medium">{{ message }}</span>
+            </div>
+        {% endfor %}
+
+        {# Formulaire Symfony #}
+        {{ form_start(registrationForm, {'attr': {'class': 'space-y-6'}}) }}
+            
+            {# Ligne Prénom / Nom #}
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    {{ form_label(registrationForm.firstName, 'Prénom', {'label_attr': {'class': 'block text-sm font-semibold text-emerald-900 ml-1 mb-1'}}) }}
+                    {{ form_widget(registrationForm.firstName, {'attr': {'class': 'block w-full px-4 py-2.5 rounded-xl border-emerald-100 bg-emerald-50/30 text-emerald-900 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all outline-none text-sm', 'placeholder': 'Jean'}}) }}
+                    <div class="text-red-500 text-xs mt-1 font-medium">{{ form_errors(registrationForm.firstName) }}</div>
+                </div>
+                <div>
+                    {{ form_label(registrationForm.lastName, 'Nom', {'label_attr': {'class': 'block text-sm font-semibold text-emerald-900 ml-1 mb-1'}}) }}
+                    {{ form_widget(registrationForm.lastName, {'attr': {'class': 'block w-full px-4 py-2.5 rounded-xl border-emerald-100 bg-emerald-50/30 text-emerald-900 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all outline-none text-sm', 'placeholder': 'Dupont'}}) }}
+                    <div class="text-red-500 text-xs mt-1 font-medium">{{ form_errors(registrationForm.lastName) }}</div>
+                </div>
+            </div>
+
+            {# Email #}
+            <div>
+                {{ form_label(registrationForm.email, 'Adresse Email', {'label_attr': {'class': 'block text-sm font-semibold text-emerald-900 ml-1 mb-1'}}) }}
+                {{ form_widget(registrationForm.email, {'attr': {'class': 'block w-full px-4 py-2.5 rounded-xl border-emerald-100 bg-emerald-50/30 text-emerald-900 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all outline-none text-sm', 'placeholder': 'jean.dupont@exemple.com'}}) }}
+                <div class="text-red-500 text-xs mt-1 font-medium">{{ form_errors(registrationForm.email) }}</div>
+            </div>
+
+            {# Mots de passe #}
+            <div class="space-y-4">
+                <div>
+                    {{ form_label(registrationForm.plainPassword, 'Mot de passe', {'label_attr': {'class': 'block text-sm font-semibold text-emerald-900 ml-1 mb-1'}}) }}
+                    {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'block w-full px-4 py-2.5 rounded-xl border-emerald-100 bg-emerald-50/30 text-emerald-900 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all outline-none text-sm', 'placeholder': '••••••••'}}) }}
+                    <div class="text-red-500 text-xs mt-1 font-medium">{{ form_errors(registrationForm.plainPassword) }}</div>
+                </div>
+
+                <div>
+                    {{ form_label(registrationForm.confirmPassword, 'Confirmer le mot de passe', {'label_attr': {'class': 'block text-sm font-semibold text-emerald-900 ml-1 mb-1'}}) }}
+                    {{ form_widget(registrationForm.confirmPassword, {'attr': {'class': 'block w-full px-4 py-2.5 rounded-xl border-emerald-100 bg-emerald-50/30 text-emerald-900 focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all outline-none text-sm', 'placeholder': '••••••••'}}) }}
+                </div>
+            </div>
+
+            {# Checkbox CGU #}
+            <div class="relative flex items-start ml-1">
+                <div class="flex items-center h-5">
+                    {{ form_widget(registrationForm.agreeTerms, {'attr': {'class': 'h-4 w-4 text-emerald-600 focus:ring-emerald-500 border-emerald-300 rounded cursor-pointer'}}) }}
+                </div>
+                <div class="ml-3 text-sm">
+                    {{ form_label(registrationForm.agreeTerms, 'J’accepte les conditions générales', {'label_attr': {'class': 'font-medium text-emerald-800 cursor-pointer'}}) }}
+                    <div class="text-red-500 text-xs mt-1">{{ form_errors(registrationForm.agreeTerms) }}</div>
+                </div>
+            </div>
+
+            {# Bouton Submit #}
+            <div class="pt-4">
+                <button type="submit" class="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-xl shadow-lg text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 transition-all hover:scale-[1.01] active:scale-[0.99]">
+                    Créer mon compte
+                </button>
+            </div>
+
+        {{ form_end(registrationForm) }}
+
+        {# Lien vers Login #}
+        <div class="mt-8 pt-6 border-t border-emerald-50 text-center">
+            <p class="text-sm text-emerald-800">
+                Déjà inscrit ? 
+                <a href="{{ path('app_login') }}" class="font-bold text-emerald-600 hover:text-emerald-500 transition-colors">
+                    Connectez-vous ici
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
